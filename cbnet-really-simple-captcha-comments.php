@@ -3,7 +3,7 @@
  * Plugin Name:   cbnet Really Simple CAPTCHA Comments
  * Plugin URI:    http://www.chipbennett.net/wordpress/plugins/cbnet-really-simple-captcha-comments/
  * Description:   Comment form CAPTCHA using  Really Simple CAPTCHA plugin
- * Version:       1.0.2
+ * Version:       2.0
  * Author:        chipbennett
  * Author URI:    http://www.chipbennett.net/
  *
@@ -25,101 +25,130 @@
  * to incorporate Really Simple CAPTCHA into their own plugins.
  */
  
-// Add Really Simple CAPTCHA to the comment form, using the comment_form_after_fields hook.
-// http://wordpress.org/extend/plugins/really-simple-captcha/
+/**
+ * Bootstrap Plugin settings
+ */
+include( plugin_dir_path( __FILE__ ) . 'settings.php' );
 
-function cbnet_comment_captcha() { 
-if ( ( ! $user_ID ) && ( class_exists('ReallySimpleCaptcha') ) ) {
-	// Instantiate the ReallySimpleCaptcha class, which will handle all of the heavy lifting
-	$cbnet_comment_captcha = new ReallySimpleCaptcha();
-	
-	// ReallySimpleCaptcha class option defaults.
-	// For now, these are here merely for reference.
-	// Changing these values will hav no impact.
-	// If you want to configure these options, see "Set Really Simple CAPTCHA Options", below
-	// TODO: Add admin page to allow configuration of options.
-	$cbnet_comment_captcha_defaults = array(
-		'chars' => 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789',
-		'char_length' => '4',
-		'img_size' => array( '72', '24' ),
-		'fg' => array( '0', '0', '0' ),
-		'bg' => array( '255', '255', '255' ),
-		'font_size' => '16',
-		'font_char_width' => '15',
-		'img_type' => 'png',
-		'base' => array( '6', '18'),
-	);
-	
-/************************************************************
- * All configurable options are below  *
- ************************************************************/
-	
-	// Set Really Simple CAPTCHA Options
-	$cbnet_comment_captcha->chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-	$cbnet_comment_captcha->char_length = '4';
-	$cbnet_comment_captcha->img_size = array( '72', '24' );
-	$cbnet_comment_captcha->fg = array( '0', '0', '0' );
-	$cbnet_comment_captcha->bg = array( '255', '255', '255' );
-	$cbnet_comment_captcha->font_size = '16';
-	$cbnet_comment_captcha->font_char_width = '15';
-	$cbnet_comment_captcha->img_type = 'png';
-	$cbnet_comment_captcha->base = array( '6', '18' );
-	
-	// Set Comment Form Options
-	$cbnet_comment_captcha_form_label = 'Anti-Spam:';
-	
-/************************************************************
- * Nothing else to edit.  No configurable options below this point.  *
- ************************************************************/
-	
-	// Generate random word and image prefix
-	$cbnet_comment_captcha_word = $cbnet_comment_captcha->generate_random_word();
-	$cbnet_comment_captcha_prefix = mt_rand();
-	// Generate CAPTCHA image
-	$cbnet_comment_captcha_image_name = $cbnet_comment_captcha->generate_image($cbnet_comment_captcha_prefix, $cbnet_comment_captcha_word);
-	// Define values for comment form CAPTCHA fields
-	$cbnet_comment_captcha_image_url =  get_bloginfo('wpurl') . '/wp-content/plugins/really-simple-captcha/tmp/';
-	$cbnet_comment_captcha_image_src = $cbnet_comment_captcha_image_url . $cbnet_comment_captcha_image_name;
-	$cbnet_comment_captcha_image_width = $cbnet_comment_captcha->img_size[0];
-	$cbnet_comment_captcha_image_height = $cbnet_comment_captcha->img_size[1];
-	$cbnet_comment_captcha_field_size = $cbnet_comment_captcha->char_length;
-	// Output the comment form CAPTCHA fields
-?>
-	<p class="comment-form-captcha"><img src="<?php echo $cbnet_comment_captcha_image_src; ?>" alt="captcha" width="<?php echo $cbnet_comment_captcha_image_width; ?>" height="<?php echo $cbnet_comment_captcha_image_height; ?>" />
-		<label for="captcha_code"><?php echo $cbnet_comment_captcha_form_label; ?></label>
-		<input type="text" name="comment_captcha_code" id="comment_captcha_code" value="" size="<?php echo $cbnet_comment_captcha_field_size; ?>" />
-		<input type="hidden" name="comment_captcha_prefix" id="comment_captcha_prefix" value="<?php echo $cbnet_comment_captcha_prefix; ?>" />
-	</p>
-<?php 
+/**
+ * Globalize Plugin options
+ */
+global $cbnet_rscc_options;
+$cbnet_rscc_options = cbnet_rscc_get_options();
+ 
+/**
+ * Add Really Simple CAPTCHA to the comment form, using the comment_form_after_fields hook.
+ * http://wordpress.org/extend/plugins/really-simple-captcha/
+ */
+function cbnet_rscc_captcha() { 
+	if ( ( ! is_user_logged_in() ) && ( class_exists('ReallySimpleCaptcha') ) ) {
+		// Instantiate the ReallySimpleCaptcha class, which will handle all of the heavy lifting
+		$cbnet_rscc_captcha = new ReallySimpleCaptcha();
+		
+		// Get Plugin options
+		global $cbnet_rscc_options;
+		
+	/************************************************************
+	 * All configurable options are below  *
+	 ************************************************************/
+		
+		// Set Really Simple CAPTCHA Options
+		$cbnet_rscc_captcha->chars = $cbnet_rscc_options['chars']; //'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
+		$cbnet_rscc_captcha->char_length = $cbnet_rscc_options['char_length']; //'4'
+		$cbnet_rscc_captcha->img_size = array( $cbnet_rscc_options['img_size_x'], $cbnet_rscc_options['img_size_y'] ); //array( '72', '24' )
+		$cbnet_rscc_captcha->fg = array( $cbnet_rscc_options['fg_r'], $cbnet_rscc_options['fg_g'], $cbnet_rscc_options['fg_b'] ); //array( '0', '0', '0' )
+		$cbnet_rscc_captcha->bg = array( $cbnet_rscc_options['bg_r'], $cbnet_rscc_options['bg_g'], $cbnet_rscc_options['bg_b'] ); //array( '255', '255', '255' )
+		$cbnet_rscc_captcha->font_size = $cbnet_rscc_options['font_size']; //'16'
+		$cbnet_rscc_captcha->font_char_width = $cbnet_rscc_options['font_char_width']; //'15'
+		$cbnet_rscc_captcha->img_type = $cbnet_rscc_options['img_type']; //'png'
+		$cbnet_rscc_captcha->base = $cbnet_rscc_options['base']; //array( '6', '18' )
+		
+		// Set Comment Form Options
+		$cbnet_rscc_captcha_form_label = $cbnet_rscc_options['comment_form_label']; //'Anti-Spam:'
+		
+	/************************************************************
+	 * Nothing else to edit.  No configurable options below this point.  *
+	 ************************************************************/
+		
+		// Generate random word and image prefix
+		$cbnet_rscc_captcha_word = $cbnet_rscc_captcha->generate_random_word();
+		$cbnet_rscc_captcha_prefix = mt_rand();
+		// Generate CAPTCHA image
+		$cbnet_rscc_captcha_image_name = $cbnet_rscc_captcha->generate_image($cbnet_rscc_captcha_prefix, $cbnet_rscc_captcha_word);
+		// Define values for comment form CAPTCHA fields
+		$cbnet_rscc_captcha_image_url =  get_bloginfo('wpurl') . '/wp-content/plugins/really-simple-captcha/tmp/';
+		$cbnet_rscc_captcha_image_src = $cbnet_rscc_captcha_image_url . $cbnet_rscc_captcha_image_name;
+		$cbnet_rscc_captcha_image_width = $cbnet_rscc_captcha->img_size[0];
+		$cbnet_rscc_captcha_image_height = $cbnet_rscc_captcha->img_size[1];
+		$cbnet_rscc_captcha_field_size = $cbnet_rscc_captcha->char_length;
+		// AJAX url
+		$cbnet_rscc_captcha_ajax_url = plugin_dir_url( __FILE__ ) . 'ajaxresponse.php';
+		// ABSPATH
+		$cbnet_rscc_abspath = urlencode( ABSPATH );
+		
+		// Output the comment form CAPTCHA fields
+	?>
+		<script>
+		function cbnetRsccInlineCaptchaCheck( code, prefix, url, abspath ) {
+			// Setup variables
+			var code_string = '?code=' + code;
+			var prefix_string = '&prefix=' + prefix;
+			var abspath_string = '&abspath=' + abspath;
+			var request_url_base = url;
+			var request_url = request_url_base + code_string + prefix_string + abspath_string;
+			
+			// Instantiate request
+			var xmlhttp = new XMLHttpRequest();
+			
+			// Parse resonse
+			xmlhttp.onreadystatechange=function() { 
+				if ( 4 == xmlhttp.readyState && 200 ==xmlhttp.status ) {
+					var ajax_response = xmlhttp.responseText;
+					
+					// Update form verification feedback
+					if ( 'true' == ajax_response ) {
+						document.getElementById( 'cbnet-rscc-captcha-verify' ).innerHTML = '<span style="color:green">Correct CAPTCHA value</span>';
+						document.getElementById( 'comment_captcha_code' ).style.background = '#ccffcc';
+					} else if ( 'false' == ajax_response ) {
+						document.getElementById( 'cbnet-rscc-captcha-verify' ).innerHTML = '<span style="color:red">Incorrect CAPTCHA value</span>';
+						document.getElementById( 'comment_captcha_code' ).style.background = '#ffccff';
+					}				
+				}
+			}
+			// Send request
+			xmlhttp.open( 'GET', request_url, true );
+			xmlhttp.send();
+		}
+		</script>
+		<p class="comment-form-captcha"><img src="<?php echo $cbnet_rscc_captcha_image_src; ?>" alt="captcha" width="<?php echo $cbnet_rscc_captcha_image_width; ?>" height="<?php echo $cbnet_rscc_captcha_image_height; ?>" />
+			<label for="captcha_code"><?php echo $cbnet_rscc_captcha_form_label; ?></label>
+			<?php echo "<input type='text' name='comment_captcha_code' id='comment_captcha_code' value='' size='$cbnet_rscc_captcha_field_size' onblur='cbnetRsccInlineCaptchaCheck( this.value, \"$cbnet_rscc_captcha_prefix\", \"$cbnet_rscc_captcha_ajax_url\", \"$cbnet_rscc_abspath\" )' />"; ?>
+			<input type="hidden" name="comment_captcha_prefix" id="comment_captcha_prefix" value="<?php echo $cbnet_rscc_captcha_prefix; ?>" />
+			<p id="cbnet-rscc-captcha-verify">Please enter the CAPTCHA text</p>
+		</p>
+	<?php 
 	}
 }
-add_action( 'comment_form_after_fields' , 'cbnet_comment_captcha' );
+add_action( 'comment_form_after_fields' , 'cbnet_rscc_captcha' );
 
-function cbnet_check_comment_captcha( $comment_data  ) {	
-if ( ( ! is_user_logged_in() ) && ( $comment_data['comment_type'] == '' ) && ( class_exists('ReallySimpleCaptcha') ) ) { 
-	$cbnet_comment_captcha = new ReallySimpleCaptcha();
-	// This variable holds the CAPTCHA image prefix, which corresponds to the correct answer
-	$cbnet_comment_captcha_prefix = $_POST['comment_captcha_prefix'];
-	// This variable holds the CAPTCHA response, entered by the user
-	$cbnet_comment_captcha_code = $_POST['comment_captcha_code'];
-	// This variable will hold the result of the CAPTCHA validation. Set to 'false' until CAPTCHA validation passes
-	$cbnet_comment_captcha_correct = false; 
-	// Validate the CAPTCHA response
-	$cbnet_comment_captcha_check = $cbnet_comment_captcha->check( $cbnet_comment_captcha_prefix, $cbnet_comment_captcha_code );
-	// Set to 'true' if validation passes, and 'false' if validation fails
-	$cbnet_comment_captcha_correct = $cbnet_comment_captcha_check;
-	// clean up the tmp directory
-	$cbnet_comment_captcha->remove($cbnet_comment_captcha_prefix);
-	$cbnet_comment_captcha->cleanup();
-	// If CAPTCHA validation fails (incorrect value entered in CAPTCHA field) don't process the comment.
-	if ( ! $cbnet_comment_captcha_correct ) {
-		wp_die('You have entered an incorrect CAPTCHA value. Click the BACK button on your browser, and try again.');
-		break;
-	} 
-	// if CAPTCHA validation passes (correct value entered in CAPTCHA field), process the comment as per normal
-	return $comment_data;
-	} else {
-		return $comment_data;
+function cbnet_check_comment_captcha( $approved, $comment_data  ) {
+	if ( ( ! is_user_logged_in() ) && ( $comment_data['comment_type'] == '' ) && ( class_exists('ReallySimpleCaptcha') ) ) {
+		$cbnet_rscc_captcha = new ReallySimpleCaptcha();
+		// This variable holds the CAPTCHA image prefix, which corresponds to the correct answer
+		$cbnet_rscc_captcha_prefix = $_POST['comment_captcha_prefix'];
+		// This variable holds the CAPTCHA response, entered by the user
+		$cbnet_rscc_captcha_code = $_POST['comment_captcha_code'];
+		// Validate the CAPTCHA response
+		$cbnet_rscc_captcha_correct = $cbnet_rscc_captcha->check( $cbnet_rscc_captcha_prefix, $cbnet_rscc_captcha_code );
+		// If CAPTCHA validation fails (incorrect value entered in CAPTCHA field) mark comment as spam.
+		if ( true != $cbnet_rscc_captcha_correct ) {
+			$approved = 'spam';
+		}
+		// clean up the tmp directory
+		$cbnet_rscc_captcha->remove($cbnet_rscc_captcha_prefix);
+		$cbnet_rscc_captcha->cleanup();
 	}
-} 
-add_filter('preprocess_comment', 'cbnet_check_comment_captcha', 0);
+	// Return $approved
+	return $approved;
+}
+add_filter( 'pre_comment_approved', 'cbnet_check_comment_captcha', 99, 2 );
