@@ -3,7 +3,7 @@
  * Plugin Name:   cbnet Really Simple CAPTCHA Comments
  * Plugin URI:    http://www.chipbennett.net/wordpress/plugins/cbnet-really-simple-captcha-comments/
  * Description:   Comment form CAPTCHA using  Really Simple CAPTCHA plugin
- * Version:       2.0
+ * Version:       2.1
  * Author:        chipbennett
  * Author URI:    http://www.chipbennett.net/
  *
@@ -24,6 +24,15 @@
  * plugin. Hopefully this plugin will provide some inspiration for others
  * to incorporate Really Simple CAPTCHA into their own plugins.
  */
+ 
+/**
+ * Load Plugin textdomain
+ */
+function cbnet_rscc_load_textdomain() {
+	load_plugin_textdomain( 'cbnet_rscc', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' ); 
+}
+// Load Plugin textdomain
+add_action( 'plugins_loaded', 'cbnet_rscc_load_textdomain' );
  
 /**
  * Bootstrap Plugin settings

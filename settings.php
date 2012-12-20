@@ -38,7 +38,7 @@ function cbnet_rscc_get_option_defaults() {
 		'font_char_width' => '15',
 		'img_type' => 'png',
 		'base' => array( '6', '18'),
-		'comment_form_label' => 'Anti-Spam'
+		'comment_form_label' => __( 'Anti-Spam' , 'cbnet_rscc' )
 	);
 	return apply_filters( 'cbnet_rscc_option_defaults', $defaults );
 }
@@ -51,120 +51,120 @@ function cbnet_rscc_get_option_parameters() {
 	$parameters = array(
 		'chars' => array(
 			'name' => 'chars',
-			'title' => 'Characters',
-			'description' => 'Characters available to be used in generated CAPTCHA images',
+			'title' => __( 'Characters' , 'cbnet_rscc' ),
+			'description' => __( 'Characters available to be used in generated CAPTCHA images' , 'cbnet_rscc' ),
 			'type' => 'textarea',
 			'sanitize' => 'nohtml',
 			'default' => $defaults['chars']
 		),
 		'char_length' => array(
 			'name' => 'char_length',
-			'title' => 'Character Length',
-			'description' => 'Number of characters used in generated CAPTCHA images',
+			'title' => __( 'Character Length' , 'cbnet_rscc' ),
+			'description' => __( 'Number of characters used in generated CAPTCHA images' , 'cbnet_rscc' ),
 			'type' => 'text',
 			'sanitize' => 'integer',
 			'default' => $defaults['char_length']
 		),
 		'img_size_x' => array(
 			'name' => 'img_size_x',
-			'title' => 'Image Width',
-			'description' => 'Width of CAPTCHA image, in pixels (px)',
+			'title' => __( 'Image Width' , 'cbnet_rscc' ),
+			'description' => __( 'Width of CAPTCHA image, in pixels (px)' , 'cbnet_rscc' ),
 			'type' => 'text',
 			'sanitize' => 'integer',
 			'default' => $defaults['img_size_x']
 		),
 		'img_size_y' => array(
 			'name' => 'img_size_y',
-			'title' => 'Image Height',
-			'description' => 'Height of CAPTCHA image, in pixels (px)',
+			'title' => __( 'Image Height' , 'cbnet_rscc' ),
+			'description' => __( 'Height of CAPTCHA image, in pixels (px)' , 'cbnet_rscc' ),
 			'type' => 'text',
 			'sanitize' => 'integer',
 			'default' => $defaults['img_size_y']
 		),
 		'fg_r' => array(
 			'name' => 'fg_r',
-			'title' => 'Image Foreground Color R Value',
-			'description' => 'Image foreground RGB color R value',
+			'title' => __( 'Image Foreground Color R Value' , 'cbnet_rscc' ),
+			'description' => __( 'Image foreground RGB color R value' , 'cbnet_rscc' ),
 			'type' => 'text',
 			'sanitize' => 'rgb',
 			'default' => $defaults['fg_r']
 		),
 		'fg_g' => array(
 			'name' => 'fg_g',
-			'title' => 'Image Foreground Color G Value',
-			'description' => 'Image foreground RGB color R value',
+			'title' => __( 'Image Foreground Color G Value' , 'cbnet_rscc' ),
+			'description' => __( 'Image foreground RGB color R value' , 'cbnet_rscc' ),
 			'type' => 'text',
 			'sanitize' => 'rgb',
 			'default' => $defaults['fg_g']
 		),
 		'fg_b' => array(
 			'name' => 'fg_b',
-			'title' => 'Image Foreground Color B Value',
-			'description' => 'Image foreground RGB color B value',
+			'title' => __( 'Image Foreground Color B Value' , 'cbnet_rscc' ),
+			'description' => __( 'Image foreground RGB color B value' , 'cbnet_rscc' ),
 			'type' => 'text',
 			'sanitize' => 'rgb',
 			'default' => $defaults['fg_b']
 		),
 		'bg_r' => array(
 			'name' => 'bg_r',
-			'title' => 'Image Background Color R Value',
-			'description' => 'Image background RGB color R value',
+			'title' => __( 'Image Background Color R Value' , 'cbnet_rscc' ),
+			'description' => __( 'Image background RGB color R value' , 'cbnet_rscc' ),
 			'type' => 'text',
 			'sanitize' => 'rgb',
 			'default' => $defaults['bg_r']
 		),
 		'bg_g' => array(
 			'name' => 'bg_g',
-			'title' => 'Image Background Color G Value',
-			'description' => 'Image background RGB color G value',
+			'title' => __( 'Image Background Color G Value' , 'cbnet_rscc' ),
+			'description' => __( 'Image background RGB color G value' , 'cbnet_rscc' ),
 			'type' => 'text',
 			'sanitize' => 'rgb',
 			'default' => $defaults['bg_g']
 		),
 		'bg_b' => array(
 			'name' => 'bg_b',
-			'title' => 'Image Background Color B Value',
-			'description' => 'Image background RGB color B value',
+			'title' => __( 'Image Background Color B Value' , 'cbnet_rscc' ),
+			'description' => __( 'Image background RGB color B value' , 'cbnet_rscc' ),
 			'type' => 'text',
 			'sanitize' => 'rgb',
 			'default' => $defaults['bg_b']
 		),
 		'font_size' => array(
 			'name' => 'font_size',
-			'title' => 'Font Size',
-			'description' => 'Font size in points (pt) of characters in generated CAPTCHA image',
+			'title' => __( 'Font Size' , 'cbnet_rscc' ),
+			'description' => __( 'Font size in points (pt) of characters in generated CAPTCHA image' , 'cbnet_rscc' ),
 			'type' => 'text',
 			'sanitize' => 'integer',
 			'default' => $defaults['font_size']
 		),
 		'font_char_width' => array(
 			'name' => 'font_char_width',
-			'title' => 'Character Width',
-			'description' => 'Width in pixels (px) between characters in generated CAPTCHA image',
+			'title' => __( 'Character Width' , 'cbnet_rscc' ),
+			'description' => __( 'Width in pixels (px) between characters in generated CAPTCHA image' , 'cbnet_rscc' ),
 			'type' => 'text',
 			'sanitize' => 'rgb',
 			'default' => $defaults['font_char_width']
 		),
 		'img_type' => array(
-			'name' => 'Image Type',
-			'title' => 'File type for generated CAPTCHA image',
-			'description' => '',
+			'name' => 'img_type',
+			'title' => __( 'Image File Type' , 'cbnet_rscc' ),
+			'description' => __( 'File type for generated CAPTCHA image' , 'cbnet_rscc' ),
 			'type' => 'select',
 			'valid_options' => array( 'png', 'jpeg', 'gif' ),
 			'default' => $defaults['img_type']
 		),
 		'comment_form_label' => array(
 			'name' => 'comment_form_label',
-			'title' => 'Comment Form Label',
-			'description' => 'Text label to display for the CAPTCHA in the comment form',
+			'title' => __( 'Comment Form Label' , 'cbnet_rscc' ),
+			'description' => __( 'Text label to display for the CAPTCHA in the comment form' , 'cbnet_rscc' ),
 			'type' => 'text',
 			'sanitize' => 'nohtml',
 			'default' => $defaults['comment_form_label']
 		),
 		'base' => array(
 			'name' => 'base',
-			'title' => 'CAPTCHA Secret Sauce',
-			'description' => 'If you want to modify this option, please use a filter',
+			'title' => __( 'CAPTCHA Secret Sauce' , 'cbnet_rscc' ),
+			'description' => __( 'If you want to modify this option, please use a filter' , 'cbnet_rscc' ),
 			'type' => 'internal',
 			'default' => $defaults['base']
 		)
@@ -188,13 +188,13 @@ function cbnet_rscc_register_settings() {
 	/**
 	 * Add settings section to Settings -> Discussion
 	 */
-	add_settings_section( 'cbnet_rscc', 'cbnet Really Simple CAPTCHA Comment Settings', 'cbnet_rscc_settings_section', 'discussion' );	
+	add_settings_section( 'cbnet_rscc', __( 'cbnet Really Simple CAPTCHA Comment Settings' , 'cbnet_rscc' ), 'cbnet_rscc_settings_section', 'discussion' );	
 	
 	/**
 	 * Discussion settings section callback
 	 */
 	function cbnet_rscc_settings_section() {
-		echo '<p>Configure cbnet Really Simple CAPTCHA Comments settings here.</p>';
+		echo '<p>'. __( 'Configure cbnet Really Simple CAPTCHA Comments settings here.' , 'cbnet_rscc' ) . '</p>';
 	}
 
 	/**

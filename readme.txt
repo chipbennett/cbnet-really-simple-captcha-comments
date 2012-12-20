@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: cbnet, plugin, comments, CAPTCHA, Really Simple CAPTCHA
 Requires at least: 3.1
 Tested up to: 3.5
-Stable tag: 2.0
+Stable tag: 2.1
 
 Comment form CAPTCHA using  Really Simple CAPTCHA plugin. Proof-of-concept for other plugin developers.
 
@@ -92,6 +92,8 @@ The HTML output is wrapped in a paragraph tag, with class="comment-form-captcha"
 
 == Changelog ==
 
+= 2.1 (2012.12.20) =
+* Made Plugin translation-ready
 = 2.0 (2012.12.06] =
 * Major update
 * Updated code-base
@@ -111,6 +113,8 @@ The HTML output is wrapped in a paragraph tag, with class="comment-form-captcha"
 
 == Upgrade Notice ==
 
+= 2.1 =
+Made Plugin translation-ready
 = 2.0 =
 Major update. Plugin compatible with WordPress 3.5, added Plugin settings, added AJAX form feedback.
 = 1.0.3 =
